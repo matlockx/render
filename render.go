@@ -378,6 +378,18 @@ func (r *Render) layoutFuncs(templates *template.Template, name string, binding 
 			}
 			return "", nil
 		},
+		"snippet": func(partialName string, data interface{}) (template.HTML, error) {
+			fullPartialName := fmt.Sprintf("%s-%s", partialName, name)
+			if templates.Lookup(fullPartialName) == nil && r.opt.RenderPartialsWithoutPrefix {
+				fullPartialName = partialName
+			}
+			if r.opt.RequirePartials || templates.Lookup(fullPartialName) != nil {
+				buf, err := r.execute(templates, fullPartialName, data)
+				// Return safe HTML here since we are rendering our own template.
+				return template.HTML(buf.String()), err
+			}
+			return "", nil
+		},
 	}
 }
 

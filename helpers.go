@@ -13,6 +13,9 @@ var helperFuncs = template.FuncMap{
 	"partial": func() (string, error) {
 		return "", fmt.Errorf("block called with no layout defined")
 	},
+	"snippet": func(data interface{}) (string, error) {
+		return "", fmt.Errorf("block called with no layout defined")
+	},
 	"current": func() (string, error) {
 		return "", nil
 	},
